@@ -17,5 +17,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models
         [StringLength(30)]
         public string Password { get; set; }
         public List<Role> Roles { get; set; } = [];
+
+
     }
 }

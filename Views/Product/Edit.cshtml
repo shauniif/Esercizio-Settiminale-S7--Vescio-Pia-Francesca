@@ -13,6 +13,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @Html.AntiForgeryToken()
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="id" value="@productId" />

@@ -1,4 +1,5 @@
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -12,7 +13,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             return View();

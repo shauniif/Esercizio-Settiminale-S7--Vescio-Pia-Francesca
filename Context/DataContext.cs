@@ -24,6 +24,12 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context
                 .HasMany(p => p.Ingredients)
                 .WithMany(i => i.Products)
                 .UsingEntity(j => j.ToTable("IngredientsProduct"));
+
+            modelBuilder.Entity<User>()
+                .HasMany(p => p.Roles)
+                .WithMany(i => i.Users)
+                .UsingEntity(j => j.ToTable("RoleUsers"));
+
         }
     }
 }

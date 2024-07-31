@@ -2,11 +2,17 @@ using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Interfaces;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Password_Crypth_Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(opt => opt.LoginPath = "/Auth/Login");
 
 var conn = builder.Configuration.GetConnectionString("SqlServer")!;
 builder.Services
@@ -16,6 +22,10 @@ builder.Services
 builder.Services
     .AddScoped<IProductService, ProductService>()
     .AddScoped<IIngredientsService, IngredientService>()
+    .AddScoped<IRoleService, RoleService>()
+    .AddScoped<IAuthService, AuthService>()
+    .AddScoped<IPasswordEncoder, PasswordEncoders>()
+    .AddScoped<IOrderService, OrderService>()
     ;
 
 var app = builder.Build();

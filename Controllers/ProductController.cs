@@ -79,9 +79,12 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProductViewModel productV, IEnumerable<int> ingredientSelected)
         {
-            
+            if (ModelState.IsValid)
+            {
             await _productSvc.Update(id, productV, ingredientSelected);
             return RedirectToAction("AllProducts", "Product");
+            }
+            return View(productV);
         }
     }
 }

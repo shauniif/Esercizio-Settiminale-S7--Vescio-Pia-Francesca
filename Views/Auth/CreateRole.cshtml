@@ -1,16 +1,16 @@
-﻿@model Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Ingredient
+﻿@model Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Role
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CreateRole";
 }
 
-<h1>Create</h1>
+<h1>CreateRole</h1>
 
-<h4>Ingredient</h4>
+<h4>Role</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="CreateRole">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

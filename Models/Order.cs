@@ -17,6 +17,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models
         public bool IsProcessed { get; set; } = false;
 
         public User User { get; set; }
-        public List<Product> Products { get; set; } = [];
+        public List<OrderItem> Items { get; set; } = [];
     }
 }

@@ -1,0 +1,57 @@
+﻿@model Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    var productId = ViewBag.ProductId;
+    var allIngredients = ViewBag.Ingredients;
+    var selectedIngs = ViewBag.SelectedIngredients;
+}
+
+<h1>Edit</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="id" value="@productId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" type="number" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryTimeInMinutes" class="control-label"></label>
+                <input asp-for="DeliveryTimeInMinutes" class="form-control" />
+                <span asp-validation-for="DeliveryTimeInMinutes" class="text-danger"></span>
+            </div>
+            @foreach (var ingredient in allIngredients)
+            {
+                <input type="checkbox" name="ingredientSelected" value="@ingredient.Id" @(selectedIngs.Contains(ingredient.Id) ? "checked" : "") />
+                <label>@ingredient.Name</label>
+            }
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

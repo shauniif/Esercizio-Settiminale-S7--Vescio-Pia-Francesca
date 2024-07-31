@@ -15,15 +15,16 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models
         [Column(TypeName ="decimal(18, 2)")]
         public decimal Price { get; set; }
 
-        [Required,StringLength(128)]
-        public required string Image { get; set; }
+        [Required]
+        [Column(TypeName = "nvarchar(max)")]
+        public string Image { get; set; }
 
         [Range(0, 60)]
         public int DeliveryTimeInMinutes { get; set; }
 
         public List<Ingredient> Ingredients { get; set; } = [];
 
-        public List<Order> Orders { get; set; } = [];
+        public List<OrderItem> Items { get; set; } = [];
 
     }
 }

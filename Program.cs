@@ -1,4 +1,6 @@
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context;
+using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Interfaces;
+using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,12 @@ var conn = builder.Configuration.GetConnectionString("SqlServer")!;
 builder.Services
     .AddDbContext<DataContext>(opt => opt.UseSqlServer(conn))
     ;
+
+builder.Services
+    .AddScoped<IProductService, ProductService>()
+    .AddScoped<IIngredientsService, IngredientService>()
+    ;
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

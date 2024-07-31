@@ -4,6 +4,7 @@ using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240729153543_modifichePerProdottiOrdini")]
+    partial class modifichePerProdottiOrdini
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,7 +115,8 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -184,7 +188,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
 
                     b.HasIndex("ProductsId");
 
-                    b.ToTable("IngredientsProduct", (string)null);
+                    b.ToTable("IngredientProduct");
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -205,7 +209,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
             modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Order", b =>
                 {
                     b.HasOne("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.User", "User")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -270,11 +274,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
             modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Product", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.User", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

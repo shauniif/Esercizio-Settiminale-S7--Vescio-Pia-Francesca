@@ -16,6 +16,14 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context
         
         public DataContext(DbContextOptions<DataContext> opt) : base(opt) { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Ingredients)
+                .WithMany(i => i.Products)
+                .UsingEntity(j => j.ToTable("IngredientsProduct"));
+        }
     }
 }

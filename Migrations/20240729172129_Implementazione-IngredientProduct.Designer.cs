@@ -4,6 +4,7 @@ using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240729172129_Implementazione-IngredientProduct")]
+    partial class ImplementazioneIngredientProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,29 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.IngredientProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("IngredientProduct");
                 });
 
             modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Order", b =>
@@ -112,7 +138,8 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -172,21 +199,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("IngredientProduct", b =>
-                {
-                    b.Property<int>("IngredientsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientsId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("IngredientsProduct", (string)null);
-                });
-
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.Property<int>("RolesId")
@@ -200,6 +212,25 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.IngredientProduct", b =>
+                {
+                    b.HasOne("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Ingredient", "Ingredient")
+                        .WithMany("Products")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Product", "Product")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Order", b =>
@@ -232,21 +263,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("IngredientProduct", b =>
-                {
-                    b.HasOne("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Ingredient", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.HasOne("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Role", null)
@@ -262,6 +278,11 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Ingredient", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Order", b =>
                 {
                     b.Navigation("Items");
@@ -269,6 +290,8 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Migrations
 
             modelBuilder.Entity("Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Product", b =>
                 {
+                    b.Navigation("Ingredients");
+
                     b.Navigation("Items");
                 });
 

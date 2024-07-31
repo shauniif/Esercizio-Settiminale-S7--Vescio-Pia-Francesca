@@ -18,6 +18,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models
         public string Password { get; set; }
         public List<Role> Roles { get; set; } = [];
 
-
+        public List<Order> Orders { get; set; } = [];
     }
 }

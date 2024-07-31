@@ -14,6 +14,8 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context
 
         public virtual DbSet<Order> Orders { get; set; } 
         
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+        
         public DataContext(DbContextOptions<DataContext> opt) : base(opt) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

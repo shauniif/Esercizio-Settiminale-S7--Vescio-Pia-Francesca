@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Order>
+
+@{
+    ViewData["Title"] = "MyOrder";
+}
+
+<h1>MyOrder</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExtraNote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsProcessed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExtraNote)
+            </td>
+            <td>
+                    <p>@(item.IsProcessed ? "EVASO" : "NON EVASO")</p>
+            </td>
+            <th>
+                    <ul>
+                        @foreach (var product in item.Items)
+                        {
+                            <li>Product: @product.Product.Name - Quantity:@product.Quantity</li>
+                            @if(!item.IsProcessed)
+                            {
+                            <form asp-action="UpdateQuantity">
+                                <input type="hidden" id="productId" name="productId" value="@product.Product.Id" />
+                                    <input type="number" value="@product.Quantity" id="quantity" name="quantity" />
+                                <button type="submit">Modifica quantità</button>
+                            </form>
+                                
+                            }
+                        }
+                    </ul>
+            </th>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

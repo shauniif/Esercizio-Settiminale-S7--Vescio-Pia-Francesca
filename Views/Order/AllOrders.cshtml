@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models.Order>
+
+@{
+    ViewData["Title"] = "AllOrders";
+}
+
+<h1>AllOrders</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExtraNote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsProcessed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExtraNote)
+            </td>
+            <td>
+                    <p>@(item.IsProcessed ? "EVASO" : "NON EVASO")</p>
+               
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                <a asp-action="ProcessOrder" asp-route-id="@item.Id">Processa l'ordine</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -92,6 +92,26 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             return View();
         }
 
+
+        public async Task<IActionResult> AllUsers()
+        {
+            var users = await _authSvc.GetAll();
+            return View(users); 
+        }
+
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _authSvc.GetById(id);
+            return View(user);
+        }
+
+
+        public async Task<IActionResult> DeleteUserConfirmed(int id)
+        {
+            await _authSvc.Delete(id);
+            return RedirectToAction("AllUsers", "Auth");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserViewModel user)
@@ -117,7 +137,39 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> DetailUser(int id)
+        {
+            // trovo l'user
+            var user = await _authSvc.GetById(id);
+            // mappo i suoi ruoli
+            var userRoles = user.Roles.Select(r => r.Name).ToList();
+            // tutti i ruoli
+            var allRoles = await _roleSvc.GetAll();
+            // mappo i nomi dei ruoli 
+            var rolesName = allRoles.Select(role => role.Name).ToList();
+            // prendo i ruoli da rimuovere
+            var rolesToRemove = rolesName.Where(r => userRoles.Contains(r)).ToList();
+
+            // rimuovo i ruoli
+            foreach (var item in rolesToRemove)
+            {
+                rolesName.Remove(item);
+            }
+            ViewBag.Roles = rolesName;
+            return View(user);
+        }
+
+        public async Task<IActionResult> AddRoleToUser(int userid, string roleName)
+        {
+           await _authSvc.AddRoleToUser(userid, roleName);
+            return RedirectToAction("AllUsers", "Auth");
+        }
+        public async Task<IActionResult> RemoveRoleToUser(int userid, string roleName)
+        {
+           await _authSvc.RemoveRoleToUser(userid, roleName);
+            return RedirectToAction("AllUsers", "Auth");
+        }
     }
-     
 }
 

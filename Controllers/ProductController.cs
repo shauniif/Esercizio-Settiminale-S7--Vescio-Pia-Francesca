@@ -86,5 +86,10 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             }
             return View(productV);
         }
+
+        public IActionResult SearchAdmin()
+        {
+            return View(); 
+        }
     }
 }

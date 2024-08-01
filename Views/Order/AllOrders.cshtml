@@ -47,7 +47,7 @@
                 @Html.DisplayFor(modelItem => item.User.Name)
             </td>
             <td>
-                <a asp-action="ProcessOrder" asp-route-id="@item.Id">Processa l'ordine</a> |
+                    <a asp-action="ChangeIsProcessed" asp-route-orderId="@item.Id">Processa l'ordine</a> |
             </td>
         </tr>
 }

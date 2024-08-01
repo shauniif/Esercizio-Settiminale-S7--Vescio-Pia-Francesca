@@ -87,16 +87,51 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Name == name);
             if (user == null) throw new Exception("User not found");
 
-            // Trova l'ordine non processato per l'utente
+            
             var order = await _db.Orders
                                  .Include(o => o.Items)
                                  .ThenInclude(i => i.Product)
                                  .FirstOrDefaultAsync(o => o.User.Id == user.Id && !o.IsProcessed);
 
             var orderItem = order.Items.FirstOrDefault(i => i.Product.Id == productId);
-            Console.WriteLine($"My order item {orderItem}");
+            
             orderItem.Quantity = quantity;
            await _db.SaveChangesAsync();
+
         }
+
+        public async Task ChangeIsProcessed(int orderId)
+        {
+            var order = await _db.Orders
+                        .Include(o => o.Items)
+                        .FirstOrDefaultAsync(x => x.Id == orderId);
+
+            if(order.IsProcessed)
+            {
+                order.IsProcessed = false;
+
+                
+            } else
+            {
+                 order.IsProcessed = true;
+            }
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<int> CountOrderProcessed()
+        {
+            return await _db.Orders.Where(o => o.IsProcessed).CountAsync();
+        }
+
+        public async Task<decimal> GetTotalByDate(DateTime date)
+        {
+           var total = await _db.OrderItems
+                .Include(o => o.Order)
+                .Include(o => o.Product)
+                .Where(o => o.Order.Date.Date == date.Date && o.Order.IsProcessed)
+                .SumAsync(o => o.Quantity * o.Product.Price);
+            return total;
+        }
+        
     }
 }

@@ -4,11 +4,14 @@ using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Password_Crypth_Implementations;
+using Esercizio_Settiminale_S7_Vescio_Pia_Francesca;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllers();
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -27,7 +30,13 @@ builder.Services
     .AddScoped<IPasswordEncoder, PasswordEncoders>()
     .AddScoped<IOrderService, OrderService>()
     ;
-
+builder.Services.
+              AddAuthorization(opt =>
+              {
+                  opt.AddPolicy(Policies.LoggedIn, cfg => cfg.RequireAuthenticatedUser());
+                  opt.AddPolicy(Policies.IsAdmin, cfg => cfg.RequireRole("Admin"));
+                  opt.AddPolicy(Policies.IsAdmin, cfg => cfg.RequireRole("User"));
+              });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

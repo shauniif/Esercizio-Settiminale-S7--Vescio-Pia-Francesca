@@ -16,6 +16,19 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
             _passwordEncoder = passwordEncoder;
             _db = db;
         }
+
+        public async Task<User> AddRoleToUser(int userId, string roleName)
+        {
+            var user = await _db.Users.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == userId);
+            var role = await _db.Roles.SingleOrDefaultAsync(r => r.Name == roleName);
+            if(!user.Roles.Contains(role))
+            {
+                user.Roles.Add(role);
+            }
+            await _db.SaveChangesAsync();
+            return user;
+        }
+
         public async Task<User> Create(UserViewModel entity)
         {
             var defaultRole = await _db.Roles.FirstOrDefaultAsync(r => r.Name == "User");
@@ -32,19 +45,28 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
             return user;
         }
 
-        public Task<User> Delete(User entity)
+        public async Task<User> Delete(int id)
         {
-            throw new NotImplementedException();
+           var user = await GetById(id);
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+            return user;
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            throw new NotImplementedException();
+            var users = await _db.Users
+                    .Include(x => x.Roles)
+                    .ToListAsync();
+            return users;
         }
 
-        public Task<User> GetById(int id)
+        public async Task<User> GetById(int id)
         {
-            throw new NotImplementedException();
+            var user = await _db.Users
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return user!;
         }
 
         public async Task<User> Login(UserViewModel entity)
@@ -63,9 +85,20 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
                             .ToListAsync()
                 };
             }
-            return null;
+            return null!;
         }
 
+        public async Task<User> RemoveRoleToUser(int userId, string roleName)
+        {
+            var user = await _db.Users.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == userId);
+            var role = await _db.Roles.SingleOrDefaultAsync(r => r.Name == roleName);
+            if (user.Roles.Contains(role))
+            {
+                user.Roles.Remove(role);
+            }
+            await _db.SaveChangesAsync();
+            return user;
+        }
 
         public Task<User> Update(User entity)
         {

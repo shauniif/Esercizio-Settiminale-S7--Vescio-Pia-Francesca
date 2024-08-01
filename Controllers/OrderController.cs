@@ -38,5 +38,11 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             await _orderSvc.UpdateQuantity(name, productId, quantity);
             return RedirectToAction("MyOrder", "Order");
         }
+
+        public async Task<IActionResult> ChangeIsProcessed(int orderId)
+        {
+            await _orderSvc.ChangeIsProcessed(orderId);
+            return RedirectToAction("AllOrders", "Order");
+        }
     }
 }

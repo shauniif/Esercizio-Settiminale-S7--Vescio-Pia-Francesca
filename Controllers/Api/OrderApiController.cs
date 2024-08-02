@@ -26,9 +26,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers.Api
 
         [HttpGet("TotalByDay/{date}")]
         public async Task<ActionResult> TotalPayed(DateTime date)
-        {
-            var datestring = date.ToString("dd/MM/yyyy");
-            Console.WriteLine(datestring);
+        { 
             var total = await _orderSvc.GetTotalByDate(date);
             return Ok(total);
         }

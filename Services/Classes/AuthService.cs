@@ -3,6 +3,8 @@ using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Interfaces;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Password_Crypth_Implementations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Data;
 
 namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
 {
@@ -17,8 +19,11 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
             _db = db;
         }
 
+
+        // trovo l'user e il ruolo, se non è presente tra i suoi ruoli lo aggiunge
         public async Task<User> AddRoleToUser(int userId, string roleName)
-        {
+        {   
+            
             var user = await _db.Users.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == userId);
             var role = await _db.Roles.SingleOrDefaultAsync(r => r.Name == roleName);
             if(!user.Roles.Contains(role))
@@ -71,23 +76,21 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
 
         public async Task<User> Login(UserViewModel entity)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == entity.Email);    
+            var user = await _db.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Email == entity.Email);    
             if (user != null && _passwordEncoder.IsSame(entity.Password, user.Password))
             {
-
-                return new User
+                var userResulted = new User
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Roles = await _db.Roles
-                            .Include(r => r.Users)
-                            .Where(user => user.Name == entity.Name)
-                            .ToListAsync()
+                    Roles = user.Roles.ToList()
                 };
+                return userResulted;
+
             }
             return null!;
         }
-
+        // trovo l'user e il ruolo, se è presente tra i suoi ruoli lo rimuove
         public async Task<User> RemoveRoleToUser(int userId, string roleName)
         {
             var user = await _db.Users.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == userId);
@@ -100,9 +103,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
             return user;
         }
 
-        public Task<User> Update(User entity)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

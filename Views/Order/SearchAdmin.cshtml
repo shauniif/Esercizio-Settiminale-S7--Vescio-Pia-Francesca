@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "ResearchofAdmin";
+
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Daily Summary</h1>
+</div>
+
+<div class="row justify-content-center mb-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-4 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title mb-3">Earning of the Day:</h5>
+                <div class="d-flex align-items-center justify-content-center mb-3">
+                    <input type="date" id="date" class="form-control me-2" />
+                    <button id="research" class="btn btn-primary">Research</button>
+                </div>
+                <p class="card-text">
+                    The earning for <span id="dateinput" class="fw-bold">N/A</span> is:
+                    <span id="totalPrice" class="fw-bold">€0.00</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-4">
+            <div class="card-body text-center">
+                <p class="card-text">
+                    The number of orders processed:
+                    <span id="countOrder" class="fw-bold">0</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,11 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+﻿<div class="text-center my-5">
+    <div class="bg-TextBox text-white rounded p-5">
+        <h1 class="display-3">Welcome to Pizzeria In Forno</h1>
+        <p class="lead">Experience the best pizza in town, made with love and fresh ingredients.</p>
+        <hr class="my-4">
+        
+    </div>
+    <div class="mt-4">
+        <a class="btn btn-light btn-lg" asp-controller="Product" asp-action="AllProducts">Show Products</a>
+    </div>
 </div>

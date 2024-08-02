@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 {
+    [Authorize(Policies.IsAdmin)]
     public class AuthController : Controller
     {
         private readonly IRoleService _roleSvc;
@@ -18,6 +20,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             _roleSvc = roleSvc;
             _authSvc = authSvc;
         }
+        
         public async Task<IActionResult> AllRoles()
         {
             var roles = await _roleSvc.GetAll();
@@ -70,7 +73,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             return RedirectToAction("AllRoles", "Auth");
         }
 
-
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -78,6 +81,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserViewModel user)
         {   
             if(ModelState.IsValid)
@@ -87,12 +91,13 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             }
             return View();
         }
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
-
+    
         public async Task<IActionResult> AllUsers()
         {
             var users = await _authSvc.GetAll();
@@ -114,10 +119,11 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserViewModel user)
         {
             var u = await _authSvc.Login(user);
-             if (u != null)
+            if (u != null)
              {
                  var claims = new List<Claim>
                      {
@@ -125,13 +131,17 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
                      new Claim(ClaimTypes.Email, u.Email)
                      };
                  u.Roles.ForEach(r => claims.Add(new Claim(ClaimTypes.Role, r.Name)));
+                 
                  var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
 
                  await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                  new ClaimsPrincipal(identity));
-             } 
+            } 
             return RedirectToAction("Index", "Home");
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

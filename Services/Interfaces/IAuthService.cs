@@ -4,7 +4,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Interfaces
     public interface IAuthService
     {
         Task<User> Create(UserViewModel entity);
-        Task<User> Update(User entity);
         Task<User> Delete(int id);
 
         Task<IEnumerable<User>> GetAll();

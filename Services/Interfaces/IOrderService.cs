@@ -18,5 +18,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Interfaces
 
         Task<decimal> GetTotalByDate(DateTime date);
 
+        Task<Order> Delete(int orderId);
+
     }
 }

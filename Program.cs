@@ -17,6 +17,15 @@ builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opt => opt.LoginPath = "/Auth/Login");
 
+builder.Services.
+              AddAuthorization(opt =>
+              {
+                  opt.AddPolicy(Policies.LoggedIn, cfg => cfg.RequireAuthenticatedUser());
+                  opt.AddPolicy(Policies.IsAdmin, cfg => cfg.RequireRole("Admin"));
+                  opt.AddPolicy(Policies.IsUser, cfg => cfg.RequireRole("User"));
+              });
+
+
 var conn = builder.Configuration.GetConnectionString("SqlServer")!;
 builder.Services
     .AddDbContext<DataContext>(opt => opt.UseSqlServer(conn))
@@ -30,13 +39,8 @@ builder.Services
     .AddScoped<IPasswordEncoder, PasswordEncoders>()
     .AddScoped<IOrderService, OrderService>()
     ;
-builder.Services.
-              AddAuthorization(opt =>
-              {
-                  opt.AddPolicy(Policies.LoggedIn, cfg => cfg.RequireAuthenticatedUser());
-                  opt.AddPolicy(Policies.IsAdmin, cfg => cfg.RequireRole("Admin"));
-                  opt.AddPolicy(Policies.IsAdmin, cfg => cfg.RequireRole("User"));
-              });
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

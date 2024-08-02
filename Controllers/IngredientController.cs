@@ -1,10 +1,12 @@
 ﻿using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 {
+    [Authorize(Policies.IsAdmin)]
     public class IngredientController : Controller
     {
         private readonly IIngredientsService _ingredientsSvc;

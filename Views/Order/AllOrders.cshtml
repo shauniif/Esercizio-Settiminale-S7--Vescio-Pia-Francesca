@@ -4,52 +4,37 @@
     ViewData["Title"] = "AllOrders";
 }
 
-<h1>AllOrders</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExtraNote)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsProcessed)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExtraNote)
-            </td>
-            <td>
-                    <p>@(item.IsProcessed ? "EVASO" : "NON EVASO")</p>
-               
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Name)
-            </td>
-            <td>
-                    <a asp-action="ChangeIsProcessed" asp-route-orderId="@item.Id">Processa l'ordine</a> |
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h1>All order of the users</h1>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Date)</th>
+                <th>@Html.DisplayNameFor(model => model.Address)</th>
+                <th>@Html.DisplayNameFor(model => model.ExtraNote)</th>
+                <th>@Html.DisplayNameFor(model => model.IsProcessed)</th>
+                <th>@Html.DisplayNameFor(model => model.User.Name)</th>
+                <th>Azione</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ExtraNote)</td>
+                    <td>
+                        <span class="badge @(item.IsProcessed ? "bg-success" : "bg-danger")">
+                            @(item.IsProcessed ? "EVASO" : "NON EVASO")
+                        </span>
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.User.Name)</td>
+                    <td>
+                        <a class="btn btn-sm btn-info" asp-action="ChangeIsProcessed" asp-route-orderId="@item.Id">
+                            <i class="bi bi-check-circle"></i> Processa
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

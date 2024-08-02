@@ -2,9 +2,11 @@ using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,12 +15,13 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
         {
             _logger = logger;
         }
-        [Authorize]
+        
         public IActionResult Index()
         {
             return View();
         }
 
+        
         public IActionResult Privacy()
         {
             return View();

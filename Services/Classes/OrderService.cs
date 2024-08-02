@@ -63,8 +63,10 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
         public async Task<IEnumerable<Order>> GetAllOrders()
         {
             var allOrders = await _db.Orders
+                                .Include(o => o.User)
                                 .Include(p => p.Items)
                                 .ThenInclude(i => i.Product)
+                                
                                 .ToListAsync();
 
             return allOrders;
@@ -132,6 +134,13 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Classes
                 .SumAsync(o => o.Quantity * o.Product.Price);
             return total;
         }
-        
+
+        public async Task<Order> Delete(int orderId)
+        {
+           var order = _db.Orders.FirstOrDefault(o => o.Id == orderId);
+            _db.Orders.Remove(order);
+            await _db.SaveChangesAsync();
+            return order;
+        }
     }
 }

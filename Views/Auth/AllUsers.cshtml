@@ -4,11 +4,8 @@
     ViewData["Title"] = "AllUsers";
 }
 
-<h1>AllUsers</h1>
+<h1>All Users</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -33,16 +30,15 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                <ul>
+                <ul class="list-unstyled">
                     @foreach (var role in item.Roles) {
                         <li>@role.Name</li>
                     }
                 </ul>
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="DetailUser" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-warning"  asp-action="DetailUser" asp-route-id="@item.Id">Details</a> |
+                <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

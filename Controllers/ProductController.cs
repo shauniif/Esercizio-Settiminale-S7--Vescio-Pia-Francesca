@@ -1,10 +1,12 @@
 ﻿using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Context;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Models;
 using Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProductService _productSvc;
@@ -21,6 +23,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policies.IsAdmin)]
         public IActionResult Create()
         {
             var ingredients = _db.Ingredients.ToList();
@@ -30,6 +33,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policies.IsAdmin)]
         public async Task<IActionResult> Create(ProductViewModel model, IEnumerable<int> ingredientSelected)
         {
             if (ModelState.IsValid)
@@ -43,7 +47,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
                 return View(model);
             }
         }
-
+        [Authorize(Policies.IsAdmin)]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _productSvc.Read(id);
@@ -52,6 +56,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             return View(product);
         }
 
+        [Authorize(Policies.IsAdmin)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _productSvc.Delete(id);
@@ -59,6 +64,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 
         }
 
+        [Authorize(Policies.IsAdmin)]
         public async Task<IActionResult> Edit(int id)
         {
             var ingredients = _db.Ingredients.ToList();
@@ -77,6 +83,7 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policies.IsAdmin)]
         public async Task<IActionResult> Edit(int id, ProductViewModel productV, IEnumerable<int> ingredientSelected)
         {
             if (ModelState.IsValid)
@@ -87,9 +94,6 @@ namespace Esercizio_Settiminale_S7_Vescio_Pia_Francesca.Controllers
             return View(productV);
         }
 
-        public IActionResult SearchAdmin()
-        {
-            return View(); 
-        }
+       
     }
 }

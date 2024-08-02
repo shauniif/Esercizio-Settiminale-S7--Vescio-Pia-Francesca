@@ -32,6 +32,7 @@
                 {
                     <li>@role.Name
                         <a asp-action="RemoveRoleToUser"
+                           class="btn btn-danger"
                            asp-controller="Auth"
                            asp-route-roleName="@role.Name"
                            asp-route-userId="@Model.Id">Remove Role</a>
@@ -47,7 +48,9 @@
             @foreach(var role in rolesToAdd)
             {
                     <li>@role
-                        <a asp-action="AddRoleToUser"
+                        <a
+                            class="btn btn-success"
+                        asp-action="AddRoleToUser"
                         asp-controller="Auth"
                         asp-route-roleName="@role"
                         asp-route-userId="@Model.Id">Add Role</a>

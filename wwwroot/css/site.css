@@ -20,3 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+.bg-TextBox {
+    background: rgb(121,41,9);
+    background: linear-gradient(90deg, rgba(121,41,9,1) 39%, rgba(255,106,0,1) 91%);
+}
